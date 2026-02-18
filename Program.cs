@@ -8,6 +8,7 @@ using NadinSoftTask.Domain.Entities;
 using NadinSoftTask.Infrastructure.Persistence;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,11 @@ builder.Services.AddAuthentication(options =>
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ProductProfile));
+
+//CQRS
+builder.Services.AddMediatR(typeof(Program));
+
+
 
 var app = builder.Build();
 
