@@ -51,5 +51,22 @@ namespace NadinSoftTask.Controllers
             return Ok(_mapper.Map<List<ProductDto>>(products));
         }
 
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, CreateProductDto dto)
+        {
+            var product = await _db.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (product.CreatedByUserId != userId) return Forbid();
+
+            _mapper.Map(dto, product); 
+            await _db.SaveChangesAsync();
+
+            return Ok(_mapper.Map<ProductDto>(product));
+        }
+
     }
 }
