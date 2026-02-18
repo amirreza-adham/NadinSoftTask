@@ -83,7 +83,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAutoMapper(typeof(ProductProfile));
 
 //CQRS
-builder.Services.AddMediatR(typeof(Program));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 
 
 
