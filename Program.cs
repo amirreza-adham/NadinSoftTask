@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NadinSoftTask.Domain.Entities;
 using NadinSoftTask.Infrastructure.Persistence;
@@ -28,6 +28,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // این خط دیتابیس را ایجاد و آخرین Migration را اعمال می‌کند
 }
 
 app.UseHttpsRedirection();
