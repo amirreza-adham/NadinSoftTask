@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NadinSoftTask.Application.Mappings;
 using NadinSoftTask.Domain.Entities;
 using NadinSoftTask.Infrastructure.Persistence;
 using System.Text;
@@ -44,6 +45,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(ProductProfile));
 
 var app = builder.Build();
 
