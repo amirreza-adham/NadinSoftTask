@@ -68,5 +68,23 @@ namespace NadinSoftTask.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
+
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _db.Products.FindAsync(id);
+            if (product == null) return NotFound();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (product.CreatedByUserId != userId) return Forbid();
+
+            _db.Products.Remove(product);
+            await _db.SaveChangesAsync();
+            return Ok("the product removed");
+        }
+
     }
 }
