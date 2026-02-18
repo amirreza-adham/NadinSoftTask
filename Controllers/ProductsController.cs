@@ -24,7 +24,7 @@ namespace NadinSoftTask.Controllers
             _mapper = mapper;
         }
 
-
+        
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(CreateProductDto dto)
@@ -37,6 +37,18 @@ namespace NadinSoftTask.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(_mapper.Map<ProductDto>(product));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] string? createdByUserId)
+        {
+            var query = _db.Products.AsQueryable();
+            if (!string.IsNullOrEmpty(createdByUserId))
+                query = query.Where(p => p.CreatedByUserId == createdByUserId);
+
+            var products = await query.ToListAsync();
+            return Ok(_mapper.Map<List<ProductDto>>(products));
         }
 
     }
